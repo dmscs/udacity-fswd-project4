@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setupv2 import Asin, Base, Sku, User, Keyword
+from database_setup import Asin, Base, Sku, User, Keyword
 
 engine = create_engine('sqlite:///amazon.db')
 # Bind the engine to the metadata of the Base class so that the
@@ -20,7 +20,7 @@ session = DBSession()
 
 
 # Create dummy user
-User1 = User(name="Samuel Hong", email="sml.hng@gmail.com")
+User1 = User(name="", email="todays.review001@gmail.com")
 session.add(User1)
 session.commit()
 
