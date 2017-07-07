@@ -5,7 +5,7 @@
 	<div class="row divider green">
 		<div class="col-md-12"></div>
 	</div>
-	<div class="row banner menu">
+	<div class="row banner catalog">
 		<div class="col-md-11 col-md-offset-1 padding-none">
 			<h1>{{ asin.name }}
 			<figure class="creator">
@@ -42,21 +42,21 @@
 			<div class="col-md-3">
 				<h2>Skus</h2>
 					{% for i in items %}
-						<div class="menu-item">
+						<div class="catalog-item">
 							<h3>{{i.name}}</h3>
 							</div>
 					{% endfor %}
 			</div>
 		</div>
 	{% endif %}
-	
+
 	{% if keywords !=[] %}
 		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-3">
 				<h2>Keyword Phrases</h2>
 					{% for keyword in keywords %}
-						<div class="menu-item">
+						<div class="catalog-item">
 							<h3>{{keyword.name}}</h3>
 							</div>
 					{% endfor %}

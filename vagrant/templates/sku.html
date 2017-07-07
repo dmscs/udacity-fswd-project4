@@ -4,7 +4,7 @@
 	<div class="row divider green">
 		<div class="col-md-12"></div>
 	</div>
-	<div class="row banner menu">
+	<div class="row banner catalog">
 		<div class="col-md-11 col-md-offset-1 padding-none">
 			<h1>{{ asin.name }}
 			<figure class="creator">
@@ -56,7 +56,7 @@
 			{% if items !=[] %}
 				{% for i in items %}
 				<div class="items-wrapper">
-					<span class="menu-item">
+					<span class="catalog-item">
 						<h3>{{i.name}}</h3>
 					</span>
 					<span class="delete-button">
@@ -87,7 +87,7 @@
 				{% if keywords !=[] %}
 					{% for keyword in keywords %}
 					<div class="items-wrapper">
-						<div class="menu-item">
+						<div class="catalog-item">
 							<h3>{{keyword.name}}</h3>
 						</div>
 						<span class="delete-button">
@@ -102,7 +102,7 @@
 				{% endif %}
 
 			<a href="{{url_for('newKeyword', asin_id = asin.id )}}">
-				<button class="btn btn-default" id="new-menu-item">
+				<button class="btn btn-default" id="new-catalog-item">
 					<span class="glyphicon glyphicon-glass" aria-hidden="true"></span>Add Keyword
 				</button>
 			</a>
