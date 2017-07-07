@@ -200,9 +200,9 @@ def gdisconnect():
       return response
 
 
-#JSON APIs to view Asin Information
-@app.route('/asin/<int:asin_id>/sku/JSON')
-def asinJSON(asin_id):
+#JSON APIs to view Asin, Keyword, and Sku Information
+@app.route('/asin/<int:asin_id>/skus/JSON')
+def skusJSON(asin_id):
     asin = session.query(Asin).filter_by(id = asin_id).one()
     items = session.query(Sku).filter_by(asin_id = asin_id).all()
     return jsonify(Skus=[i.serialize for i in items])
@@ -213,21 +213,30 @@ def skuJSON(asin_id, sku_id):
     sku = session.query(Sku).filter_by(id = sku_id).one()
     return jsonify(Sku = sku.serialize)
 
-@app.route('/asin/<int:asin_id>/keyword/JSON')
-def asinJSON(asin_id):
+
+@app.route('/asin/<int:asin_id>/keywords/JSON')
+def keywordsJSON(asin_id):
     asin = session.query(Asin).filter_by(id = asin_id).one()
     items = session.query(Keyword).filter_by(asin_id = asin_id).all()
     return jsonify(Keywords=[i.serialize for i in items])
 
+
 @app.route('/asin/<int:asin_id>/keyword/<int:keyword_id>/JSON')
-def skuJSON(asin_id, keyword_id):
+def keywordJSON(asin_id, keyword_id):
     keyword = session.query(Keyword).filter_by(id = keyword_id).one()
     return jsonify(Keyword = keyword.serialize)
+
 
 @app.route('/asins/JSON')
 def asinsJSON():
     asins = session.query(Asin).all()
     return jsonify(asins= [r.serialize for r in asins])
+
+
+@app.route('/asin/<int:asin_id>/JSON')
+def asinsJSON(asin_id):
+    asin = session.query(Asin).filter_by(id = asin_id).one()
+    return jsonify(asins= asin.serialize)
 
 
 #Show all asins
