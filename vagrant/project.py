@@ -15,6 +15,17 @@ import httplib2
 import json
 from flask import make_response
 import requests
+from functools import wraps
+
+
+# Decorater to check user is logged in.
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            return redirect('/login')
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 CLIENT_ID = json.loads(
@@ -251,9 +262,8 @@ def showAsins():
 
 #Create a new asin
 @app.route('/asin/new/', methods=['GET','POST'])
+@login_required
 def newAsin():
-    if 'username' not in login_session:
-      return redirect('/login')
     if request.method == 'POST':
         newAsin = Asin(name = request.form['name'],
                                    user_id=login_session['user_id'])
@@ -266,6 +276,7 @@ def newAsin():
 
 #Edit an asin
 @app.route('/asin/<int:asin_id>/edit/', methods = ['GET', 'POST'])
+@login_required
 def editAsin(asin_id):
     editedAsin = session.query(Asin).filter_by(id = asin_id).one()
     if request.method == 'POST':
@@ -279,9 +290,8 @@ def editAsin(asin_id):
 
 #Delete an asin
 @app.route('/asin/<int:asin_id>/delete/', methods = ['GET','POST'])
+@login_required
 def deleteAsin(asin_id):
-    if 'username' not in login_session:
-      return redirect('/login')
     asinToDelete = session.query(Asin).filter_by(id = asin_id).one()
     if asinToDelete.user_id != login_session['user_id']:
         return "<script>function myFunction() {alert('You are not authorized to delete this asin. Please your own asin to delete.');}</script><body onload='myFunction()''>"
@@ -311,9 +321,8 @@ def showSku(asin_id):
 
 #Create a new sku
 @app.route('/asin/<int:asin_id>/sku/new/',methods=['GET','POST'])
+@login_required
 def newSku(asin_id):
-    if 'username' not in login_session:
-      return redirect('/login')
     asin = session.query(Asin).filter_by(id = asin_id).one()
     if request.method == 'POST':
         newItem = Sku(name = request.form['name'], asin_id = asin_id,
@@ -327,9 +336,8 @@ def newSku(asin_id):
 
 #Edit a sku
 @app.route('/asin/<int:asin_id>/sku/<int:sku_id>/edit', methods=['GET','POST'])
+@login_required
 def editSku(asin_id, sku_id):
-    if 'username' not in login_session:
-      return redirect('/login')
     editedItem = session.query(Sku).filter_by(id = sku_id).one()
     asin = session.query(Asin).filter_by(id = asin_id).one()
     if request.method == 'POST':
@@ -351,9 +359,8 @@ def editSku(asin_id, sku_id):
 
 #Delete a sku
 @app.route('/asin/<int:asin_id>/sku/<int:sku_id>/delete', methods = ['GET','POST'])
+@login_required
 def deleteSku(asin_id,sku_id):
-    if 'username' not in login_session:
-      return redirect('/login')
     asin = session.query(Asin).filter_by(id = asin_id).one()
     itemToDelete = session.query(Sku).filter_by(id = sku_id).one()
     if request.method == 'POST':
@@ -367,9 +374,8 @@ def deleteSku(asin_id,sku_id):
 
 #Create a new keyword
 @app.route('/asin/<int:asin_id>/keyword/new/',methods=['GET','POST'])
+@login_required
 def newKeyword(asin_id):
-    if 'username' not in login_session:
-      return redirect('/login')
     asin = session.query(Asin).filter_by(id = asin_id).one()
     if request.method == 'POST':
         newItem = Keyword(name = request.form['name'], asin_id = asin_id,
@@ -384,9 +390,8 @@ def newKeyword(asin_id):
 
 #Delete a keyword
 @app.route('/asin/<int:asin_id>/keyword/<int:keyword_id>/delete', methods = ['GET','POST'])
+@login_required
 def deleteKeyword(asin_id, keyword_id):
-    if 'username' not in login_session:
-      return redirect('/login')
     asin = session.query(Asin).filter_by(id = asin_id).one()
     itemToDelete = session.query(Keyword).filter_by(id = keyword_id).one()
     if request.method == 'POST':
