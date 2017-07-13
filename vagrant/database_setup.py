@@ -21,6 +21,8 @@ class Asin(Base):
     name = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    sku = relationship("Sku", cascade="all, delete-orphan")
+    keyword = relationship("Keyword", cascade="all, delete-orphan")
 
     @property
     def serialize(self):
