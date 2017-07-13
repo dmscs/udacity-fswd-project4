@@ -294,7 +294,12 @@ def editAsin(asin_id):
 def deleteAsin(asin_id):
     asinToDelete = session.query(Asin).filter_by(id = asin_id).one()
     if asinToDelete.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to delete this asin. Please your own asin to delete.');}</script><body onload='myFunction()''>"
+        jscript_text = (
+        "<script>function myFunction() {alert('You are not authorized "
+        "to delete this asin.');}</script>"
+        "<body onload='myFunction()''>"
+        )
+        return jscript_text
     if request.method == 'POST':
       session.delete(asinToDelete)
       flash('%s Successfully Deleted' % asinToDelete.name)
