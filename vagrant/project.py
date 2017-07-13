@@ -28,6 +28,19 @@ def login_required(f):
     return decorated_function
 
 
+# Checks to see if user is authorized
+def check_authorized_user(item):
+    if item.user_id != login_session['user_id']:
+        jscript_text = (
+        "<script>function myFunction() {alert('You are not authorized "
+        "to delete this item.');}</script>"
+        "<body onload='myFunction()''>"
+        )
+        return jscript_text
+    else:
+        return None
+
+
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant Men Application"
@@ -293,13 +306,10 @@ def editAsin(asin_id):
 @login_required
 def deleteAsin(asin_id):
     asinToDelete = session.query(Asin).filter_by(id = asin_id).one()
-    if asinToDelete.user_id != login_session['user_id']:
-        jscript_text = (
-        "<script>function myFunction() {alert('You are not authorized "
-        "to delete this asin.');}</script>"
-        "<body onload='myFunction()''>"
-        )
-        return jscript_text
+    # Checks for authorized user
+    deny_authorization = check_authorized_user(asinToDelete)
+    if deny_authorization != None:
+        return deny_authorization
     if request.method == 'POST':
       session.delete(asinToDelete)
       flash('%s Successfully Deleted' % asinToDelete.name)
@@ -344,6 +354,10 @@ def newSku(asin_id):
 @login_required
 def editSku(asin_id, sku_id):
     editedItem = session.query(Sku).filter_by(id = sku_id).one()
+    # Checks for authorized user
+    deny_authorization = check_authorized_user(editedItem)
+    if deny_authorization != None:
+        return deny_authorization
     asin = session.query(Asin).filter_by(id = asin_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -368,6 +382,10 @@ def editSku(asin_id, sku_id):
 def deleteSku(asin_id,sku_id):
     asin = session.query(Asin).filter_by(id = asin_id).one()
     itemToDelete = session.query(Sku).filter_by(id = sku_id).one()
+    # Checks for authorized user
+    deny_authorization = check_authorized_user(itemToDelete)
+    if deny_authorization != None:
+        return deny_authorization
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
@@ -399,6 +417,10 @@ def newKeyword(asin_id):
 def deleteKeyword(asin_id, keyword_id):
     asin = session.query(Asin).filter_by(id = asin_id).one()
     itemToDelete = session.query(Keyword).filter_by(id = keyword_id).one()
+    # Checks for authorized user
+    deny_authorization = check_authorized_user(itemToDelete)
+    if deny_authorization != None:
+        return deny_authorization
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
