@@ -245,7 +245,7 @@ def asinsJSON():
 
 
 @app.route('/asin/<int:asin_id>/JSON')
-def asinsJSON(asin_id):
+def asinJSON(asin_id):
     asin = session.query(Asin).filter_by(id = asin_id).one()
     return jsonify(asins= asin.serialize)
 
