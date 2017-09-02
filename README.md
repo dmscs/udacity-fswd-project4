@@ -1,5 +1,5 @@
-# Project 4 Item Catalog
-Simple website that displays asins, skus, keywords and uses Google login. Hopefully can be used as boilerplate for more complex interfaces. Built from [udacity-oauth2](https://github.com/udacity/OAuth2.0).
+# Item Catalog
+Simple website that displays asins, skus, keywords and uses Google login. Hopefully can be used as template for more complex interfaces. Next step is to add data visualization for keyword rank.
 
 ## Getting Started
 Here are tools you need to get started.
